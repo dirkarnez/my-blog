@@ -10,7 +10,7 @@ import '../styles/blog-listing.css';
 // to generate all types from graphQL schema
 interface IndexPageProps {
   data: {
-    allMarkdownRemark : {
+    allMarkdownRemark: {
       edges: {
         node: {
           excerpt: string;
@@ -47,19 +47,24 @@ export const pageQuery = graphql`
 export default (props: IndexPageProps) => {
   const { data: { allMarkdownRemark: { edges } } } = props;
   return (
-    <div className="blog-posts">
-      {edges.filter(edge => edge.node.frontmatter.title.length > 0)
-        .map(({ node }) => {
-          return (
-            <div className="blog-post-preview" key={node.id}>
-              <h1>
-                <Link to={node.frontmatter.path}>{node.frontmatter.title}</Link>
-              </h1>
-              <h2>{node.frontmatter.date}</h2>
-              <p>{node.excerpt}</p>
-            </div>
-          );
-        })}
-    </div>
+    <Layout>
+      {() => (
+        <div className="blog-posts">
+          {
+            edges
+            .filter(edge => edge.node.frontmatter.title.length > 0)
+            .map(({ node }) => (
+              <div className="blog-post-preview" key={node.id}>
+                <h1>
+                  <Link to={node.frontmatter.path}>{node.frontmatter.title}</Link>
+                </h1>
+                <h2>{node.frontmatter.date}</h2>
+                <p>{node.excerpt}</p>
+              </div>
+            ))
+          }
+        </div>
+      )}
+    </Layout>
   );
 }
