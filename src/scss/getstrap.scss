@@ -1,0 +1,220 @@
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+$navbarheight: 40px;
+
+// override bootstrap styles here
+.btn {
+   border-radius: 0;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.blog-card-background {
+  object-fit: cover;
+  width: 100%;
+}
+
+.blog-card {
+  filter: brightness(50%);
+}
+
+.jumbotron {
+  border-radius: 0;
+}
+////
+.blog-header {
+  overflow: hidden;
+  background-color: #000000;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  height: $navbarheight;
+}
+
+.main {
+  margin-top: $navbarheight + 10px; /* Add a top margin to avoid content overlay */
+}
+
+///
+
+.sidenav {
+  top: $navbarheight; /* Add a top margin to avoid content overlay */
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(0,0,0,0.85);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+ 
+ .sidenav a {
+   padding: 8px 8px 8px 32px;
+   text-decoration: none;
+   font-size: 25px;
+   color: #818181;
+   display: block;
+   transition: 0.3s;
+ }
+ 
+ .sidenav a:hover {
+   color: #f1f1f1;
+ }
+ 
+ .sidenav .closebtn {
+   position: absolute;
+   top: 0;
+   right: 25px;
+   font-size: 36px;
+   margin-left: 50px;
+ }
+ 
+//  @media screen and (max-height: 450px) {
+//    .sidenav {padding-top: 15px;}
+//    .sidenav a {font-size: 18px;}
+//  }
+
+
+
+//////
+
+/* stylelint-disable selector-list-comma-newline-after */
+
+.blog-header {
+   z-index: 99999;
+ }
+ 
+ .blog-header-logo {
+   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+   font-size: 2.25rem;
+ }
+ 
+ .blog-header-logo:hover {
+   text-decoration: none;
+ }
+ 
+ h1, h2, h3, h4, h5, h6 {
+   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+ }
+ 
+ .display-4 {
+   font-size: 2.5rem;
+ }
+ @media (min-width: 768px) {
+   .display-4 {
+     font-size: 3rem;
+   }
+ }
+ 
+ .nav-scroller {
+   position: relative;
+   z-index: 2;
+   height: 2.75rem;
+   overflow-y: hidden;
+ }
+ 
+ .nav-scroller .nav {
+   display: -ms-flexbox;
+   display: flex;
+   -ms-flex-wrap: nowrap;
+   flex-wrap: nowrap;
+   padding-bottom: 1rem;
+   margin-top: -1px;
+   overflow-x: auto;
+   text-align: center;
+   white-space: nowrap;
+   -webkit-overflow-scrolling: touch;
+ }
+ 
+ .nav-scroller .nav-link {
+   padding-top: .75rem;
+   padding-bottom: .75rem;
+   font-size: .875rem;
+ }
+ 
+ .card-img-right {
+   height: 100%;
+   border-radius: 0 3px 3px 0;
+ }
+ 
+ .flex-auto {
+   -ms-flex: 0 0 auto;
+   flex: 0 0 auto;
+ }
+ 
+ .h-250 { height: 250px; }
+ @media (min-width: 768px) {
+   .h-md-250 { height: 250px; }
+ }
+ 
+ /*
+  * Blog name and description
+  */
+ .blog-title {
+   margin-bottom: 0;
+   font-size: 2rem;
+   font-weight: 400;
+ }
+ .blog-description {
+   font-size: 1.1rem;
+   color: #999;
+ }
+ 
+ @media (min-width: 40em) {
+   .blog-title {
+     font-size: 3.5rem;
+   }
+ }
+ 
+ /* Pagination */
+ .blog-pagination {
+   margin-bottom: 4rem;
+ }
+ .blog-pagination > .btn {
+   border-radius: 2rem;
+ }
+ 
+ /*
+  * Blog posts
+  */
+ .blog-post {
+   margin-bottom: 4rem;
+ }
+ .blog-post-title {
+   margin-bottom: .25rem;
+   font-size: 2.5rem;
+ }
+ .blog-post-meta {
+   margin-bottom: 1.25rem;
+   color: #999;
+ }
+ 
+ /*
+  * Footer
+  */
+ .blog-footer {
+   padding: 2.5rem 0;
+   color: #999;
+   text-align: center;
+   background-color: #000000;
+   border-top: .05rem solid #e5e5e5;
+ }
+ .blog-footer p:last-child {
+   margin-bottom: 0;
+ }
+
+
+////my own
+html, body, #___gatsby{ height:100%; margin:0; }
+
+/* Trick */
+#___gatsby{ 
+  display:flex; 
+  flex-direction:column; 
+}
+
+footer{
+  margin-top:auto; 
+}

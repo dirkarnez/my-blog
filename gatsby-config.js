@@ -4,13 +4,13 @@ module.exports = {
     },
     plugins: [
       `gatsby-plugin-typescript`,
-      {
-        resolve: `gatsby-plugin-typography`,
-        options: {
-          pathToConfigModule: `src/utils/typography.js`,
-          omitGoogleFont: true,
-        },
-      },
+      // {
+      //   resolve: `gatsby-plugin-typography`,
+      //   options: {
+      //     pathToConfigModule: `src/utils/typography.js`,
+      //     omitGoogleFont: true,
+      //   },
+      // },
       `gatsby-plugin-catch-links`,
       {
         resolve: `gatsby-source-filesystem`,
@@ -20,5 +20,6 @@ module.exports = {
         },
       },
       `gatsby-transformer-remark`,
+      `gatsby-plugin-sass`
     ],
   }

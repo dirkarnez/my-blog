@@ -3,7 +3,7 @@ import Layout from "../layouts"
 import Link from "gatsby-link";
 import { graphql } from 'gatsby';
 // import Helmet from "react-helmet";
-
+import '../scss/getstrap.scss';
 import '../styles/blog-listing.css';
 
 // Please note that you can use https://github.com/dotansimha/graphql-code-generator
@@ -44,27 +44,46 @@ export const pageQuery = graphql`
   }
 `;
 
-export default (props: IndexPageProps) => {
-  const { data: { allMarkdownRemark: { edges } } } = props;
-  return (
-    <Layout>
-      {() => (
-        <div className="blog-posts">
+
+export default class IndexPage extends React.Component<IndexPageProps, {}> {
+  constructor(props: IndexPageProps) {
+    super(props);
+  }
+
+  render() {
+    const { data: { allMarkdownRemark: { edges } } } = this.props;
+
+    return (
+      <Layout>
+        <div className="jumbotron p-3 p-md-5 text-white bg-dark">
+          <div className="col-md-6 px-0">
+            <h1 className="display-4 font-italic">Title of a longer featured blog post</h1>
+            <p className="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+            <p className="lead mb-0"><a href="#" className="text-white font-weight-bold">Continue reading...</a></p>
+          </div>
+        </div>
+        <div className="row mb-2">
           {
             edges
             .filter(edge => edge.node.frontmatter.title.length > 0)
             .map(({ node }) => (
-              <div className="blog-post-preview" key={node.id}>
-                <h1>
-                  <Link to={node.frontmatter.path}>{node.frontmatter.title}</Link>
-                </h1>
-                <h2>{node.frontmatter.date}</h2>
-                <p>{node.excerpt}</p>
+              <div key={node.id} className="col-md-6">
+                <div className="card flex-md-row mb-4 shadow-sm h-md-250">
+                  <div className="card-body d-flex flex-column align-items-start">
+                    <strong className="d-inline-block mb-2 text-primary">World</strong>
+                    <h3 className="mb-0">
+                      {node.frontmatter.title}
+                    </h3>
+                    <div className="mb-1 text-muted">{node.frontmatter.date}</div>
+                    <p className="card-text mb-auto">{node.excerpt}</p>
+                    <Link to={node.frontmatter.path}>Continue reading</Link>
+                  </div>
+                </div>
               </div>
             ))
           }
         </div>
-      )}
-    </Layout>
-  );
+      </Layout>
+    );
+  }
 }

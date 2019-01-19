@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Button } from "../components/Button";
 
 interface IReplaceFrom {
    fromRegex: string
@@ -132,7 +133,7 @@ class PlainObject extends React.Component<{}, PlainObjectState> {
            <input type="text" value={this.state.classNameInput} onChange={this.handleClassNameInputChange} />
                <input type="text" value={this.state.fieldsInput} onChange={this.handleFieldsInputChange} />
             </label>
-            <button onClick={this.plainObject}>Generate!</button>
+            <Button onClick={this.plainObject}>Generate!</Button>
          </div>
       );
    }
@@ -164,11 +165,52 @@ export default class Slave extends React.Component<{}, {}> {
    render() {
       return (
          <div>
-            <DataUri />
+            {/* <DataUri />
             <br />
             <PlainObject />
             <br />
             <Replace />
+            <br> */}
+            <ReactClass/>
+           
+         </div>
+      );
+   }
+}
+
+
+interface ReactClassState {
+   replaced: string
+}
+
+class ReactClass extends React.Component<{}, ReactClassState> {
+   constructor(props: {}) {
+      super(props);
+      this.state = { replaced: "" };
+      this.replace = this.replace.bind(this);
+   }
+   replace() {
+      navigator.clipboard && navigator.clipboard
+         .readText()
+         .then(text => {
+            this.setState({
+               replaced: text.replace(/class[^=]*=/gmi, "className=")
+            })
+         })
+         .catch(() => {
+            this.setState({
+               replaced: ""
+            })
+         });
+   }
+
+   render() {
+      const { replaced } = this.state;
+
+      return(
+         <div>
+            { replaced && <textarea>{replaced}</textarea> }
+            <Button onClick={this.replace}>Convert</Button>
          </div>
       );
    }
