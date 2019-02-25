@@ -1,7 +1,7 @@
 import * as React from "react";
 import Header from "./header";
 import Helmet from "react-helmet";
-import { Button } from "../components/Button";
+import { Button } from "../components";
 // import "../styles/layout-overide.css";
 import Sidebar from "./sidebar";
 

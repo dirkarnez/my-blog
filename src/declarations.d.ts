@@ -6,9 +6,10 @@ declare const graphql: (query: TemplateStringsArray) => void;
 // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
 declare interface Clipboard {
   writeText(newClipText: string): Promise<void>;
-  // Add any other methods you need here.
 
   readText(): Promise<string>;
+
+  read(): Promise<DataTransfer>;
 }
 
 declare interface NavigatorClipboard {
