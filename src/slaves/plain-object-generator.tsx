@@ -27,10 +27,10 @@ const codeGenList: CodeGenList[] = [
 export default class PlainObjectGenerator extends React.Component<{}, PlainObjectState> {
   constructor(props: {}) {
     super(props);
+    
     this.state = { fieldsInput: "", classNameInput: "", selectedLanguage: "" };
-    this.handleClassNameInputChange = this.handleClassNameInputChange.bind(
-      this
-    );
+
+    this.handleClassNameInputChange = this.handleClassNameInputChange.bind(this);
     this.handleFieldsInputChange = this.handleFieldsInputChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.plainObject = this.plainObject.bind(this);
@@ -41,11 +41,13 @@ export default class PlainObjectGenerator extends React.Component<{}, PlainObjec
      public class ${classNameInput}
      {
        ${
-         !(fields.length == 1 && fields[0] == "")
-           ? fields
-               .map(field => `public string ${field} { get; set; }`)
-               .join("\n\n")
-           : ""
+          !(fields.length == 1 && fields[0] == "")
+          ? 
+          fields
+              .map(field => `public string ${field} { get; set; }`)
+              .join("\n\n")
+          : 
+          ""
        }
      }
      `;
@@ -116,35 +118,38 @@ ${fields.map(field => `  private String ${field};`).join("\n")}
   render() {
     return (
       <div>
-        <label>
-          Generate Plain Object:
-          <br/>
-          {
-            codeGenList.map(codegen => (
-              <React.Fragment>
+        Generate Plain Object:
+        <br/>
+        {
+          codeGenList.map((codegen, index) => (
+            <React.Fragment key={index}>
+              <label 
+                htmlFor={codegen.language}
+              >
                 {codegen.name}
-                <input
-                  type="radio"
-                  value={codegen.language}
-                  onChange={this.handleOptionChange}
-                  checked={this.state.selectedLanguage === codegen.language}
-                />
-              </React.Fragment>
-            ))
-          }
-          <label>Name</label>
-          <input
-            type="text"
-            value={this.state.classNameInput}
-            onChange={this.handleClassNameInputChange}
-          />
-          <label>Fields</label>
-          <input
-            type="text"
-            value={this.state.fieldsInput}
-            onChange={this.handleFieldsInputChange}
-          />
-        </label>
+              </label>
+              <input
+                type="radio"
+                id={codegen.language}
+                value={codegen.language}
+                onChange={this.handleOptionChange}
+                checked={this.state.selectedLanguage === codegen.language}
+              />
+            </React.Fragment>
+          ))
+        }
+        <label>Name</label>
+        <input
+          type="text"
+          value={this.state.classNameInput}
+          onChange={this.handleClassNameInputChange}
+        />
+        <label>Fields</label>
+        <input
+          type="text"
+          value={this.state.fieldsInput}
+          onChange={this.handleFieldsInputChange}
+        />
         <Button onClick={this.plainObject}>Generate!</Button>
       </div>
     );

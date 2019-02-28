@@ -35,7 +35,7 @@ export default class ImageToDataUri extends React.Component<{}, ImageToDataUriSt
    render() {
       return (
          <div>
-            <Button onClick={this.imageToDataUri}>Data URI to image</Button>
+            <Button onClick={this.imageToDataUri}>Image to Data URI</Button>
             {/* {this.state.imgSrc && <img src={this.state.imgSrc} />} */}
          </div>
       )
