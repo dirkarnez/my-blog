@@ -1,4 +1,5 @@
 const path = require("path");
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 exports.createPages = ({ boundActionCreators, graphql }) => {
   const { createPage } = boundActionCreators;
@@ -39,3 +40,13 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
     });
   });
 };
+
+exports.onCreateWebpackConfig = ({
+  actions
+}) => {
+  actions.setWebpackConfig({
+    plugins: [
+      new MonacoWebpackPlugin()
+    ]
+  })
+}

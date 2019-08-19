@@ -1,9 +1,9 @@
 import * as React from "react"
-import { Container } from "../components";
+import { Container, DataGrid } from "../components";
 import MonacoEditor from 'react-monaco-editor';
 import { 
-   DataUriToImage, ImageToDataUri, 
-   Traverse, ReactClass, PlainObjectGenerator, Replace, JsObjectToJson, 
+   DataUriToImage, ImageToDataUri, ExcelToMarkdown,
+   Traverse, ReactClass, PlainObjectGenerator, Replace, JsObjectToJson, InsertFrontEnd,
    ControllerGenerator, DropTableScriptGenerator, InsertScriptGenerator, MyBatisMapperXMLGenerator, BatMaker, DatabasePlainObjectGenerator
 } from "../slaves";
 
@@ -11,6 +11,15 @@ export default class Slave extends React.Component<{}, {}> {
    render() {
       return (
          <div>
+            <Container name="Excel to Markdown">
+               <ExcelToMarkdown/>
+            </Container>
+            <Container name="DataGrid">
+               <DataGrid/>
+            </Container>
+            <Container name="Insert Front End">
+               <InsertFrontEnd/>
+            </Container>
             <Container name="Database Plain Object Generator">
                <DatabasePlainObjectGenerator/>
             </Container>

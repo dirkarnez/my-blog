@@ -11,6 +11,8 @@ import DropTableScriptGenerator from "./drop-table-script-generator";
 import InsertScriptGenerator from "./insert-script-generator";
 import BatMaker from "./bat-maker";
 import DatabasePlainObjectGenerator from "./database-plain-object-generator";
+import InsertFrontEnd from "./insert-front-end";
+import ExcelToMarkdown from "./excel-to-markdown";
 
 export { 
    Traverse, 
@@ -25,5 +27,7 @@ export {
    InsertScriptGenerator,
    MyBatisMapperXMLGenerator,
    BatMaker,
-   DatabasePlainObjectGenerator
+   DatabasePlainObjectGenerator,
+   InsertFrontEnd,
+   ExcelToMarkdown
 };

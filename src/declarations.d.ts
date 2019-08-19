@@ -18,3 +18,14 @@ declare interface NavigatorClipboard {
 }
 
 declare interface Navigator extends NavigatorClipboard { }
+
+
+declare module "graph-data-structure" {
+  export class Graph {
+    addNode(node: string): void;
+    addEdge(u: string, v: string): void;
+    topologicalSort(): string[];
+  }
+
+  export default function(): Graph
+}

@@ -1,91 +1,130 @@
 import * as React from "react";
 import { Button } from "../components";
-import arrayToTree from "array-to-tree";
+import MonacoEditor from "react-monaco-editor";
 import Graph from "graph-data-structure";
 
 interface Relation {
-   tableName: string,
-   foreignKey: string,
-   foreignTable: string,
-   foreignTablePrimaryKey: string
+  tableName: string;
+  foreignKey: string;
+  foreignTable: string;
+  foreignTablePrimaryKey: string;
 }
 
-export default class DropTableScriptGenerator extends React.Component<{}, {}> {
-   constructor(props: {}) {
-      super(props);
+interface DropTableScriptGeneratorState {
+  dropTableCommands: string;
+}
 
-      this.generate = this.generate.bind(this);
-   }
+export default class DropTableScriptGenerator extends React.Component<
+  {},
+  DropTableScriptGeneratorState
+> {
+  constructor(props: {}) {
+    super(props);
 
-   generate() {
-      navigator.clipboard && navigator.clipboard
-         .readText()
-         .then(text => {
-            if (!text) {
-               return;
-            }
+    this.state = {
+      dropTableCommands: ""
+    };
 
-            var createTableRegex = `CREATE\\s+TABLE\\s+([^\(\\s]+)`;
-            var tableNamesMatchedToDrop = text.match(new RegExp(createTableRegex, "gi"));
-            
-            if (!tableNamesMatchedToDrop) {
-               return;
-            }
+    this.generate = this.generate.bind(this);
+  }
 
-            var tables = tableNamesMatchedToDrop
+  generate() {
+    navigator.clipboard &&
+      navigator.clipboard
+        .readText()
+        .then(text => {
+          if (!text) {
+            return;
+          }
+
+          var createTableRegex = `CREATE\\s+TABLE\\s+([^\(\\s]+)`;
+          var tableNamesMatchedToDrop = text.match(
+            new RegExp(createTableRegex, "gi")
+          );
+
+          if (!tableNamesMatchedToDrop) {
+            return;
+          }
+
+          var tables = tableNamesMatchedToDrop
             .map(matched => matched.match(new RegExp(createTableRegex, "i")))
-            .map(matched => matched ? matched[1] : "");
+            .map(matched => (matched ? matched[1] : ""));
 
+          var regexString = `ALTER\\s+TABLE\\s+([^\\s]+)\\s+ADD\\s+CONSTRAINT\\s+[^\\s]+\\s+FOREIGN KEY\\s+\\(\\s*([^\\s]+)\\s*\\)\\s+REFERENCES\\s+(\\s*[^\\s]+\\s*)\\s+\\(\\s*([^\\s]+)\\s*\\)`;
 
-            var regexString = `ALTER\\s+TABLE\\s+([^\\s]+)\\s+ADD\\s+CONSTRAINT\\s+[^\\s]+\\s+FOREIGN KEY\\s+\\(([^\\s]+)\\)\\s+REFERENCES\\s+([^\\s]+)\\s+\\(([^\\s]+)\\)`;
+          var dropsCommandsMatched = text.match(
+            new RegExp(regexString, "gmis")
+          );
 
-            var dropsCommandsMatched = text.match(new RegExp(regexString, "gmis"));
+          if (!dropsCommandsMatched) {
+            return;
+          }
 
-            if (dropsCommandsMatched) {
-               var temp = dropsCommandsMatched
-                  .map(match => match.match(new RegExp(regexString)))
-                  .map(match => match ? ({tableName: match[1], foreignKey: match[2], foreignTable: match[3], foreignTablePrimaryKey: match[4]} as Relation) : ({} as Relation));
-            
-               // console.log(JSON.stringify(temp));
-               // var tree = arrayToTree(temp, { parentProperty: "tableName", customID: "foreignTable" });
-               // console.log(JSON.stringify(tree));
+          var temp = dropsCommandsMatched
+            .map(match => match.match(new RegExp(regexString)))
+            .map(match =>
+              match
+                ? ({
+                    tableName: match[1],
+                    foreignKey: match[2],
+                    foreignTable: match[3],
+                    foreignTablePrimaryKey: match[4]
+                  } as Relation)
+                : ({} as Relation)
+            );
 
-               var graph = Graph();
-               for (var i = 0; i < tables.length; i++) {
-               
-                  var table = tables[i];
-                  var afterTables = temp.filter(relation => relation.tableName == table).map(relation => relation.foreignTable);
+          var graph = Graph();
 
-                  graph.addNode(table);
-                  afterTables.forEach(afterTable => {
-                     graph.addNode(afterTable);
-                     graph.addEdge(table, afterTable);
-                  });
-               }
+          tables.forEach(table => {
+            var afterTables = temp
+              .filter(relation => relation.tableName == table)
+              .map(relation => relation.foreignTable);
 
-               console.log(`${graph.topologicalSort().map(table => `DROP TABLE ${table}`).join(";\n\n")};`);
-            }
-            
-            if (tableNamesMatchedToDrop) {
-               return navigator.clipboard && navigator.clipboard
-                  .writeText(`${tableNamesMatchedToDrop.map(match => match.replace(/create/gi, "DROP")).join(";\n\n")};`)
-            } else {
-               throw new Error("Not Match");
-            }
-         })
-         .then(() => {
-            alert("done");
-         })
-         .catch(err => {
-            alert(err);
-         })
-   }
+            graph.addNode(table);
 
-   render() {
-      return (
-         <div>
-            <Button onClick={this.generate}>Generate</Button>
-         </div>
-      );
-   }
+            afterTables.forEach(afterTable => {
+              graph.addNode(afterTable);
+              graph.addEdge(table, afterTable);
+            });
+          });
+
+          var dropTableCommands = graph
+            .topologicalSort()
+            .map(table => `DROP TABLE ${table}`);
+
+          if (dropTableCommands.length == tables.length) {
+            var dropTableCommandsJoined = `${dropTableCommands.join(";\n\n")};`;
+
+            this.setState({
+              dropTableCommands: dropTableCommandsJoined
+            });
+
+            return (
+              navigator.clipboard &&
+              navigator.clipboard.writeText(dropTableCommandsJoined)
+            );
+          } else {
+            throw new Error("Not all tables are to be dropped.");
+          }
+        })
+        .then(() => {
+          alert("done");
+        })
+        .catch(err => {
+          alert(err);
+        });
+  }
+
+  render() {
+    const { dropTableCommands } = this.state;
+    return (
+      <div>
+        <Button onClick={this.generate}>Generate</Button>
+        <br />
+        {dropTableCommands && (
+          <MonacoEditor height="600" language="sql" theme="vs-dark" value={dropTableCommands}/>
+        )}
+      </div>
+    );
+  }
 }
