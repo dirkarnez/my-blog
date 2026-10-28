@@ -1,3 +1,4 @@
+<!-- -->
 <script>
 	let name = $state('world');
 	let count = $state(0);
